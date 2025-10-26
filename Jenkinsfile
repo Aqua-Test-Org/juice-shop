@@ -93,7 +93,6 @@ pipeline {
                         trivy fs --scanners misconfig,vuln,secret \
                           --skip-dirs .git,node_modules,dist,coverage \
                           --skip-db-update \
-                          --file-patterns '*.js,*.json,*.ts,*.yaml,*.yml,*.xml,*.html,*.css' \
                           .
                     '''
                 }
