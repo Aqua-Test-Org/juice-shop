@@ -92,7 +92,7 @@ pipeline {
                         export CSPM_URL=https://stage.api.cloudsploit.com
                         trivy fs --scanners misconfig,vuln,secret \
                           --skip-dirs .git,node_modules,dist,coverage,build,bin,out \
-                          --exclude '**/*.png' --exclude '**/*.jpg' --exclude '**/*.pdf' --exclude '**/*.ico' \
+                          --skip-files '**/*.png,**/*.jpg,**/*.pdf,**/*.ico' \
                           --skip-db-update \
                           .
                     '''
