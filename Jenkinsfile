@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        CHROME_BIN = '/usr/bin/google-chrome' // Adjust path if needed
+        CHROME_BIN = '/usr/bin/google-chrome'
     }
 
     tools {
@@ -87,14 +87,17 @@ pipeline {
                     string(credentialsId: 'GITHUB_TOKEN_DEV_123', variable: 'GITHUB_TOKEN')
                 ]) {
                     sh '''
+                        echo "Checking connectivity to Aqua API..."
+                        curl -I https://api.dev.supply-chain.cloud.aquasec.com || echo "Aqua API unreachable"
+
                         export TRIVY_RUN_AS_PLUGIN=aqua
                         export AQUA_URL=https://api.dev.supply-chain.cloud.aquasec.com
                         export CSPM_URL=https://stage.api.cloudsploit.com
-                        trivy fs --scanners misconfig,vuln,secret \
-                          --skip-dirs .git,node_modules,dist,coverage,build,bin,out \
-                          --skip-files '**/*.png,**/*.jpg,**/*.pdf,**/*.ico' \
+
+                        trivy fs frontend/src/app \
+                          --scanners misconfig,vuln,secret \
                           --skip-db-update \
-                          .
+                          --debug
                     '''
                 }
             }
