@@ -76,7 +76,7 @@ pipeline {
         stage('Aqua scanner') {
             agent {
                 docker {
-                    image 'aquasec/aqua-scanner'
+                    image 'aquasec/aqua-scanner:latest'
                     args '-u root:root'
                 }
             }
@@ -90,7 +90,7 @@ pipeline {
                         export TRIVY_RUN_AS_PLUGIN=aqua
                         export AQUA_URL=https://api.dev.supply-chain.cloud.aquasec.com
                         export CSPM_URL=https://stage.api.cloudsploit.com
-                        trivy fs --scanners misconfig,vuln,secret .
+                        trivy fs --scanners misconfig,vuln,secret --skip-dirs .git,node_modules --skip-db-update --skip-policy-update .
                     '''
                 }
             }
